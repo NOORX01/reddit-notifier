@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
-SUBREDDITS = ["StockMarket"]
+SUBREDDITS = ["Daytrading"]
 
 KEYWORDS = [
     "Depuis", "profits", "money", "eval", "strat", "strategy", "prop firm", "funded account",
@@ -60,7 +60,7 @@ def notify(entry, sub):
     print(f"TELEGRAM: HTTP {response.status_code} {response.text[:500]}")
 
 def main():
-    sub = "StockMarket"
+    sub = "Daytrading"
     url = f"https://www.reddit.com/r/{sub}/new/.rss"
     print(f"FETCH: {url}")
 
