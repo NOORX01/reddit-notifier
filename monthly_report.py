@@ -15,8 +15,8 @@ else:
     msg = "Every watched sub notified you at least once this month."
 
 requests.get(
-    f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
-    params={"chat_id": TELEGRAM_CHAT_ID, "text": msg},
+    f"https://api.telegram.org/bot{8714103847:AAGw-Lh_IS5EwtpbB8z5V_pY96Hvf6uuolE}/sendMessage",
+    params={"chat_id":6825628060, "text": msg},
     timeout=10,
 )
 
