@@ -7,21 +7,13 @@ TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 SUBREDDITS = ["Forex", "ForexTraders", "Forexnoobs", "Daytrading", "RealDayTrading",
     "algotrading", "Trading", "PropFirm", "FTMO", "fundedtrader",
-    "ForexFunding", "investing", "stocks", "SecurityAnalysis", "ValueInvesting",
-    "personalfinance", "financialindependence", "passive_income", "FatFIRE",
-    "SideProject", "Entrepreneur", "startups", "SaaS", "IndieHackers",
-    "solopreneurs", "wallstreetbets", "options", "StockMarket", "fintech",
-    "swingtrading", "SwingTradingForex", "PositionTrading", "Scalping",
-    "ScalpingForex", "ForexScalping", "TechnicalAnalysis", "PriceAction",
-    "RiskManagement", "Tradingstrategies", "Forexstrategy", "ForexAnalysis",
-    "ForexSignals", "TradingPsychology", "TradingView", "ForexBrokers",
-    "BrokerReviews", "MoneyManagement", "PortfolioManagement", "AssetManagement",
-    "WealthManagement", "FinancialPlanning", "OptionsTrading", "OptionStrategies",
-    "thetagang", "CoveredCalls", "WheelOptions", "CurrencyTrading", "FX",
-    "Commodities", "Economics", "GlobalMarkets", "CryptoCurrency", "CryptoMarkets",
-    "CryptoTrading", "CryptoTraders", "CryptoInvesting", "Defi", "Blockchain",
-    "QuantTrading", "quantfinance", "EntrepreneurRideAlong", "juststart",
-    "Beermoney", "passiveincome", "FIRE", "LeanFIRE", "ChubbyFIRE"]
+    "ForexFunding", "wallstreetbets", "options", "swingtrading", "SwingTradingForex",
+    "PositionTrading", "Scalping", "ScalpingForex", "ForexScalping", "TechnicalAnalysis",
+    "PriceAction", "RiskManagement", "Tradingstrategies", "Forexstrategy", "ForexAnalysis",
+    "ForexSignals", "TradingPsychology", "TradingView", "ForexBrokers", "BrokerReviews",
+    "MoneyManagement", "OptionsTrading", "OptionStrategies", "thetagang", "CoveredCalls",
+    "WheelOptions", "CurrencyTrading", "FX", "Commodities", "CryptoTrading",
+    "CryptoTraders", "QuantTrading", "quantfinance"]
 
 KEYWORDS = [
     "Depuis", "profits", "money", "eval", "strat", "strategy", "prop firm", "funded account",
