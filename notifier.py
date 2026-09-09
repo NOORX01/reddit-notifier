@@ -65,6 +65,16 @@ def matches(title):
     t = title.lower()
     return any(k.lower() in t for k in KEYWORDS)
 
+def test_keyword_matcher():
+    # Diagnostic only: does not send Telegram messages or affect the real watchlist.
+    test_title = "Daily General Discussion and Advice Thread - September 09, 2026"
+    test_keyword = "general"
+    result = test_keyword in test_title.lower()
+    print(f"MATCHER TEST: title={test_title!r}")
+    print(f"MATCHER TEST: keyword={test_keyword!r} -> {result}")
+    print(f"MATCHER TEST: uppercase keyword='GENERAL' -> {'GENERAL'.lower() in test_title.lower()}")
+    print(f"MATCHER TEST: matches(title) with current KEYWORDS -> {matches(test_title)}")
+
 def notify(entry, sub):
     requests.get(
         f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
@@ -77,6 +87,7 @@ def notify(entry, sub):
     )
 
 def main():
+    test_keyword_matcher()
     notified = set()
     stats = load_stats()
     for sub in SUBREDDITS:
