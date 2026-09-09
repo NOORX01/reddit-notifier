@@ -1,8 +1,8 @@
 {
+  "Daytrading": true,
   "Forex": false,
   "ForexTraders": false,
   "Forexnoobs": false,
-  "Daytrading": false,
   "RealDayTrading": false,
   "algotrading": false,
   "Trading": false,
