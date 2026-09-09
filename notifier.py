@@ -5,7 +5,23 @@ from datetime import datetime, timezone
 TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
-SUBREDDITS = ["Daytrading"]
+SUBREDDITS = ["Forex", "ForexTraders", "Forexnoobs", "Daytrading", "RealDayTrading",
+    "algotrading", "Trading", "PropFirm", "FTMO", "fundedtrader",
+    "ForexFunding", "investing", "stocks", "SecurityAnalysis", "ValueInvesting",
+    "personalfinance", "financialindependence", "passive_income", "FatFIRE",
+    "SideProject", "Entrepreneur", "startups", "SaaS", "IndieHackers",
+    "solopreneurs", "wallstreetbets", "options", "StockMarket", "fintech",
+    "swingtrading", "SwingTradingForex", "PositionTrading", "Scalping",
+    "ScalpingForex", "ForexScalping", "TechnicalAnalysis", "PriceAction",
+    "RiskManagement", "Tradingstrategies", "Forexstrategy", "ForexAnalysis",
+    "ForexSignals", "TradingPsychology", "TradingView", "ForexBrokers",
+    "BrokerReviews", "MoneyManagement", "PortfolioManagement", "AssetManagement",
+    "WealthManagement", "FinancialPlanning", "OptionsTrading", "OptionStrategies",
+    "thetagang", "CoveredCalls", "WheelOptions", "CurrencyTrading", "FX",
+    "Commodities", "Economics", "GlobalMarkets", "CryptoCurrency", "CryptoMarkets",
+    "CryptoTrading", "CryptoTraders", "CryptoInvesting", "Defi", "Blockchain",
+    "QuantTrading", "quantfinance", "EntrepreneurRideAlong", "juststart",
+    "Beermoney", "passiveincome", "FIRE", "LeanFIRE", "ChubbyFIRE"]
 
 KEYWORDS = [
     "Depuis", "profits", "money", "eval", "strat", "strategy", "prop firm", "funded account",
@@ -53,7 +69,7 @@ def notify(entry, sub, keyword):
         f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
         params={
             "chat_id": TELEGRAM_CHAT_ID,
-            "text": f"🔔 Reddit match\n\n{entry.title}\n\nr/{sub}\nMatched keyword: {keyword}\n\n{entry.link}",
+            "text": f"{entry.title}\nr/{sub}\nMatched keyword: {keyword}\n{entry.link}",
             "disable_web_page_preview": True,
         },
         timeout=10,
