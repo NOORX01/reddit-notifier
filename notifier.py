@@ -5,25 +5,7 @@ from datetime import datetime, timezone
 TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
-SUBREDDITS = [
-    "Forex", "ForexTraders", "Forexnoobs", "Daytrading", "RealDayTrading",
-    "algotrading", "Trading", "PropFirm", "FTMO", "fundedtrader",
-    "ForexFunding", "investing", "stocks", "SecurityAnalysis", "ValueInvesting",
-    "personalfinance", "financialindependence", "passive_income", "FatFIRE",
-    "SideProject", "Entrepreneur", "startups", "SaaS", "IndieHackers",
-    "solopreneurs", "wallstreetbets", "options", "StockMarket", "fintech",
-    "swingtrading", "SwingTradingForex", "PositionTrading", "Scalping",
-    "ScalpingForex", "ForexScalping", "TechnicalAnalysis", "PriceAction",
-    "RiskManagement", "Tradingstrategies", "Forexstrategy", "ForexAnalysis",
-    "ForexSignals", "TradingPsychology", "TradingView", "ForexBrokers",
-    "BrokerReviews", "MoneyManagement", "PortfolioManagement", "AssetManagement",
-    "WealthManagement", "FinancialPlanning", "OptionsTrading", "OptionStrategies",
-    "thetagang", "CoveredCalls", "WheelOptions", "CurrencyTrading", "FX",
-    "Commodities", "Economics", "GlobalMarkets", "CryptoCurrency", "CryptoMarkets",
-    "CryptoTrading", "CryptoTraders", "CryptoInvesting", "Defi", "Blockchain",
-    "QuantTrading", "quantfinance", "EntrepreneurRideAlong", "juststart",
-    "Beermoney", "passiveincome", "FIRE", "LeanFIRE", "ChubbyFIRE",
-]
+SUBREDDITS = ["StockMarket"]
 
 KEYWORDS = [
     "Depuis", "profits", "money", "eval", "strat", "strategy", "prop firm", "funded account",
@@ -40,13 +22,11 @@ KEYWORDS = [
 ]
 
 MAX_AGE_MINUTES = 15
-
 STATS_FILE = "stats.json"
-
 HEADERS = {"User-Agent": "reddit-keyword-notifier/1.0 (by u/your_username)"}
 
 def load_stats():
-    stats = {s: False for s in SUBREDDITS}  # auto-creates all subs
+    stats = {s: False for s in SUBREDDITS}
     if os.path.exists(STATS_FILE):
         with open(STATS_FILE) as f:
             stats.update(json.load(f))
@@ -56,27 +36,19 @@ def save_stats(stats):
     with open(STATS_FILE, "w") as f:
         json.dump(stats, f, indent=2)
 
-def is_recent(entry):
+def get_age_minutes(entry):
     published = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
-    age = (datetime.now(timezone.utc) - published).total_seconds()
-    return age < MAX_AGE_MINUTES * 60
+    return (datetime.now(timezone.utc) - published).total_seconds() / 60
+
+def is_recent(entry):
+    return get_age_minutes(entry) < MAX_AGE_MINUTES
 
 def matches(title):
     t = title.lower()
     return any(k.lower() in t for k in KEYWORDS)
 
-def test_keyword_matcher():
-    # Diagnostic only: does not send Telegram messages or affect the real watchlist.
-    test_title = "Daily General Discussion and Advice Thread - September 09, 2026"
-    test_keyword = "general"
-    result = test_keyword in test_title.lower()
-    print(f"MATCHER TEST: title={test_title!r}")
-    print(f"MATCHER TEST: keyword={test_keyword!r} -> {result}")
-    print(f"MATCHER TEST: uppercase keyword='GENERAL' -> {'GENERAL'.lower() in test_title.lower()}")
-    print(f"MATCHER TEST: matches(title) with current KEYWORDS -> {matches(test_title)}")
-
 def notify(entry, sub):
-    requests.get(
+    response = requests.get(
         f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
         params={
             "chat_id": TELEGRAM_CHAT_ID,
@@ -85,24 +57,34 @@ def notify(entry, sub):
         },
         timeout=10,
     )
+    print(f"TELEGRAM: HTTP {response.status_code} {response.text[:500]}")
 
 def main():
-    test_keyword_matcher()
-    notified = set()
-    stats = load_stats()
-    for sub in SUBREDDITS:
-        url = f"https://www.reddit.com/r/{sub}/new/.rss"
+    sub = "StockMarket"
+    url = f"https://www.reddit.com/r/{sub}/new/.rss"
+    print(f"FETCH: {url}")
+
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=15)
+        print(f"FETCH: HTTP {response.status_code}, {len(response.text)} bytes")
+        feed = feedparser.parse(response.text)
+    except Exception as e:
+        print(f"FETCH ERROR: {e}")
+        return
+
+    print(f"FEED: {len(feed.entries)} entries received")
+
+    if feed.bozo:
+        print(f"FEED WARNING: {feed.bozo_exception}")
+
+    for i, entry in enumerate(feed.entries, 1):
         try:
-            feed = feedparser.parse(requests.get(url, headers=HEADERS, timeout=15).text)
+            age = get_age_minutes(entry)
+            recent = is_recent(entry)
+            matched = matches(entry.title)
+            print(f"POST {i}: age={age:.1f}m recent={recent} match={matched} title={entry.title!r}")
         except Exception as e:
-            print(f"r/{sub}: fetch error {e}")
-            continue
-        for entry in feed.entries:
-            if entry.id not in notified and is_recent(entry) and matches(entry.title):
-                notify(entry, sub)
-                notified.add(entry.id)
-                stats[sub] = True
-    save_stats(stats)
+            print(f"POST {i}: ERROR processing entry: {e}")
 
 if __name__ == "__main__":
     main()
