@@ -2,145 +2,55 @@
 import os, json, requests, feedparser
 from datetime import datetime, timezone
 
-TELEGRAM_TOKEN = os.environ["8714103847:AAGw-Lh_IS5EwtpbB8z5V_pY96Hvf6uuolE"]
-TELEGRAM_CHAT_ID = os.environ["6825628060"]
+TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
+TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
-# <-- EDIT: your subreddits, names only, no r/, lowercase
 SUBREDDITS = [
-    "Forex",
-    "ForexTraders",
-    "Forexnoobs",
-    "Daytrading",
-    "RealDayTrading",
-    "algotrading",
-    "Trading",
-    "PropFirm",
-    "FTMO",
-    "fundedtrader",
-    "ForexFunding",
-    "investing",
-    "stocks",
-    "SecurityAnalysis",
-    "ValueInvesting",
-    "personalfinance",
-    "financialindependence",
-    "passive_income",
-    "FatFIRE",
-    "SideProject",
-    "Entrepreneur",
-    "startups",
-    "SaaS",
-    "IndieHackers",
-    "solopreneurs",
-    "wallstreetbets",
-    "options",
-    "StockMarket",
-    "fintech",
-    "swingtrading",
-    "SwingTradingForex",
-    "PositionTrading",
-    "Scalping",
-    "ScalpingForex",
-    "ForexScalping",
-    "TechnicalAnalysis",
-    "PriceAction",
-    "RiskManagement",
-    "Tradingstrategies",
-    "Forexstrategy",
-    "ForexAnalysis",
-    "ForexSignals",
-    "TradingPsychology",
-    "TradingView",
-    "ForexBrokers",
-    "BrokerReviews",
-    "MoneyManagement",
-    "PortfolioManagement",
-    "AssetManagement",
-    "WealthManagement",
-    "FinancialPlanning",
-    "OptionsTrading",
-    "OptionStrategies",
-    "thetagang",
-    "CoveredCalls",
-    "WheelOptions",
-    "CurrencyTrading",
-    "FX",
-    "Commodities",
-    "Economics",
-    "GlobalMarkets",
-    "CryptoCurrency",
-    "CryptoMarkets",
-    "CryptoTrading",
-    "CryptoTraders",
-    "CryptoInvesting",
-    "Defi",
-    "Blockchain",
-    "QuantTrading",
-    "quantfinance",
-    "EntrepreneurRideAlong",
-    "juststart",
-    "Beermoney",
-    "passiveincome",
-    "FIRE",
-    "LeanFIRE",
-    "ChubbyFIRE"
+    "Forex", "ForexTraders", "Forexnoobs", "Daytrading", "RealDayTrading",
+    "algotrading", "Trading", "PropFirm", "FTMO", "fundedtrader",
+    "ForexFunding", "investing", "stocks", "SecurityAnalysis", "ValueInvesting",
+    "personalfinance", "financialindependence", "passive_income", "FatFIRE",
+    "SideProject", "Entrepreneur", "startups", "SaaS", "IndieHackers",
+    "solopreneurs", "wallstreetbets", "options", "StockMarket", "fintech",
+    "swingtrading", "SwingTradingForex", "PositionTrading", "Scalping",
+    "ScalpingForex", "ForexScalping", "TechnicalAnalysis", "PriceAction",
+    "RiskManagement", "Tradingstrategies", "Forexstrategy", "ForexAnalysis",
+    "ForexSignals", "TradingPsychology", "TradingView", "ForexBrokers",
+    "BrokerReviews", "MoneyManagement", "PortfolioManagement", "AssetManagement",
+    "WealthManagement", "FinancialPlanning", "OptionsTrading", "OptionStrategies",
+    "thetagang", "CoveredCalls", "WheelOptions", "CurrencyTrading", "FX",
+    "Commodities", "Economics", "GlobalMarkets", "CryptoCurrency", "CryptoMarkets",
+    "CryptoTrading", "CryptoTraders", "CryptoInvesting", "Defi", "Blockchain",
+    "QuantTrading", "quantfinance", "EntrepreneurRideAlong", "juststart",
+    "Beermoney", "passiveincome", "FIRE", "LeanFIRE", "ChubbyFIRE",
 ]
 
-# <-- EDIT: keywords to match in post titles (case-insensitive)
 KEYWORDS = [
-    "money",
-    "eval",
-    "strat",
-    "strategy",
-    "prop firm",
-    "funded account",
-    "evaluation fee",
-    "challenge fee",
-    "FTMO",
-    "MyForexFunds",
-    "prop firm scam",
-    "failed evaluation",
-    "passed evaluation",
-    "payout rules",
-    "drawdown rules",
-    "profit split",
-    "need capital",
-    "trading capital",
-    "get funded",
-    "how to get funded",
-    "capital allocation",
-    "managed account",
-    "PAMM",
-    "copy trading",
-    "mirror trading",
-    "social trading",
-    "verified track record",
-    "transparent trading",
-    "managed forex",
-    "tired of prop firms",
-    "prop firm alternative",
-    "better than prop firm",
-    "keep losing evaluations",
-    "evaluation passed then failed",
-    "prop firm payout denied",
-    "passive income trading",
-    "let someone trade for me",
-    "find a trader",
-    "allocate capital",
-    "trader performance"
+    "money", "eval", "strat", "strategy", "prop firm", "funded account",
+    "evaluation fee", "challenge fee", "FTMO", "MyForexFunds", "prop firm scam",
+    "failed evaluation", "passed evaluation", "payout rules", "drawdown rules",
+    "profit split", "need capital", "trading capital", "get funded",
+    "how to get funded", "capital allocation", "managed account", "PAMM",
+    "copy trading", "mirror trading", "social trading", "verified track record",
+    "transparent trading", "managed forex", "tired of prop firms",
+    "prop firm alternative", "better than prop firm", "keep losing evaluations",
+    "evaluation passed then failed", "prop firm payout denied",
+    "passive income trading", "let someone trade for me", "find a trader",
+    "allocate capital", "trader performance",
 ]
 
-MAX_AGE_MINUTES = 15  # keep above the 5-minute cron interval
+MAX_AGE_MINUTES = 15
 
 STATS_FILE = "stats.json"
 
 HEADERS = {"User-Agent": "reddit-keyword-notifier/1.0 (by u/your_username)"}
 
 def load_stats():
+    stats = {s: False for s in SUBREDDITS}  # auto-creates all subs
     if os.path.exists(STATS_FILE):
         with open(STATS_FILE) as f:
-            return json.load(f)
-    return {}
+            stats.update(json.load(f))
+    return stats
 
 def save_stats(stats):
     with open(STATS_FILE, "w") as f:
@@ -157,9 +67,9 @@ def matches(title):
 
 def notify(entry, sub):
     requests.get(
-        f"https://api.telegram.org/bot8714103847:AAGw-Lh_IS5EwtpbB8z5V_pY96Hvf6uuolE/sendMessage",
+        f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
         params={
-            "chat_id": 6825628060,
+            "chat_id": TELEGRAM_CHAT_ID,
             "text": f"{entry.title}\nr/{sub}\n{entry.link}",
             "disable_web_page_preview": True,
         },
