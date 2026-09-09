@@ -26,7 +26,7 @@ SUBREDDITS = [
 ]
 
 KEYWORDS = [
-    "money", "eval", "strat", "strategy", "prop firm", "funded account",
+    "profits", "money", "eval", "strat", "strategy", "prop firm", "funded account",
     "evaluation fee", "challenge fee", "FTMO", "MyForexFunds", "prop firm scam",
     "failed evaluation", "passed evaluation", "payout rules", "drawdown rules",
     "profit split", "need capital", "trading capital", "get funded",
