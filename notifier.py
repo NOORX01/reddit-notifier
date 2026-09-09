@@ -41,7 +41,8 @@ def get_age_minutes(entry):
     return (datetime.now(timezone.utc) - published).total_seconds() / 60
 
 def is_recent(entry):
-    return get_age_minutes(entry) < MAX_AGE_MINUTES
+    age = get_age_minutes(entry)
+    return 0 <= age < MAX_AGE_MINUTES
 
 def matches(title):
     t = title.lower()
@@ -58,33 +59,48 @@ def notify(entry, sub):
         timeout=10,
     )
     print(f"TELEGRAM: HTTP {response.status_code} {response.text[:500]}")
+    response.raise_for_status()
+    result = response.json()
+    if not result.get("ok"):
+        raise RuntimeError(f"Telegram API error: {result}")
 
 def main():
-    sub = "Daytrading"
-    url = f"https://www.reddit.com/r/{sub}/new/.rss"
-    print(f"FETCH: {url}")
+    stats = load_stats()
 
-    try:
-        response = requests.get(url, headers=HEADERS, timeout=15)
-        print(f"FETCH: HTTP {response.status_code}, {len(response.text)} bytes")
-        feed = feedparser.parse(response.text)
-    except Exception as e:
-        print(f"FETCH ERROR: {e}")
-        return
+    for sub in SUBREDDITS:
+        url = f"https://www.reddit.com/r/{sub}/new/.rss"
+        print(f"FETCH: {url}")
 
-    print(f"FEED: {len(feed.entries)} entries received")
-
-    if feed.bozo:
-        print(f"FEED WARNING: {feed.bozo_exception}")
-
-    for i, entry in enumerate(feed.entries, 1):
         try:
-            age = get_age_minutes(entry)
-            recent = is_recent(entry)
-            matched = matches(entry.title)
-            print(f"POST {i}: age={age:.1f}m recent={recent} match={matched} title={entry.title!r}")
+            response = requests.get(url, headers=HEADERS, timeout=15)
+            print(f"FETCH: HTTP {response.status_code}, {len(response.text)} bytes")
+            response.raise_for_status()
+            feed = feedparser.parse(response.text)
         except Exception as e:
-            print(f"POST {i}: ERROR processing entry: {e}")
+            print(f"FETCH ERROR r/{sub}: {e}")
+            continue
+
+        print(f"FEED r/{sub}: {len(feed.entries)} entries received")
+
+        if feed.bozo:
+            print(f"FEED WARNING r/{sub}: {feed.bozo_exception}")
+
+        for i, entry in enumerate(feed.entries, 1):
+            try:
+                age = get_age_minutes(entry)
+                recent = is_recent(entry)
+                matched = matches(entry.title)
+                print(f"POST {i}: age={age:.1f}m recent={recent} match={matched} title={entry.title!r}")
+
+                if recent and matched:
+                    print(f"MATCH FOUND: notifying for r/{sub}")
+                    notify(entry, sub)
+                    stats[sub] = True
+                    print(f"NOTIFIED: r/{sub}")
+            except Exception as e:
+                print(f"POST {i}: ERROR processing entry: {e}")
+
+    save_stats(stats)
 
 if __name__ == "__main__":
     main()
