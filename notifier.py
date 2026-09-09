@@ -44,16 +44,16 @@ def is_recent(entry):
     age = get_age_minutes(entry)
     return 0 <= age < MAX_AGE_MINUTES
 
-def matches(title):
+def matched_keyword(title):
     t = title.lower()
-    return any(k.lower() in t for k in KEYWORDS)
+    return next((k for k in KEYWORDS if k.lower() in t), None)
 
-def notify(entry, sub):
+def notify(entry, sub, keyword):
     response = requests.get(
         f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
         params={
             "chat_id": TELEGRAM_CHAT_ID,
-            "text": f"{entry.title}\nr/{sub}\n{entry.link}",
+            "text": f"🔔 Reddit match\n\n{entry.title}\n\nr/{sub}\nMatched keyword: {keyword}\n\n{entry.link}",
             "disable_web_page_preview": True,
         },
         timeout=10,
@@ -89,12 +89,13 @@ def main():
             try:
                 age = get_age_minutes(entry)
                 recent = is_recent(entry)
-                matched = matches(entry.title)
-                print(f"POST {i}: age={age:.1f}m recent={recent} match={matched} title={entry.title!r}")
+                keyword = matched_keyword(entry.title)
+                matched = keyword is not None
+                print(f"POST {i}: age={age:.1f}m recent={recent} match={matched} keyword={keyword!r} title={entry.title!r}")
 
                 if recent and matched:
-                    print(f"MATCH FOUND: notifying for r/{sub}")
-                    notify(entry, sub)
+                    print(f"MATCH FOUND: notifying for r/{sub}, keyword={keyword!r}")
+                    notify(entry, sub, keyword)
                     stats[sub] = True
                     print(f"NOTIFIED: r/{sub}")
             except Exception as e:
