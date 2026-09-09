@@ -1,8 +1,8 @@
 # monthly_report.py
 import os, json, requests
 
-TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
-TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
+TELEGRAM_TOKEN = os.environ["8714103847:AAGw-Lh_IS5EwtpbB8z5V_pY96Hvf6uuolE"]
+TELEGRAM_CHAT_ID = os.environ["6825628060"]
 
 with open("stats.json") as f:
     stats = json.load(f)
