@@ -1,9 +1,15 @@
 name: reddit-notifier
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    # notifier.py keeps the runner alive for one 30-minute watchlist cycle.
+    - cron: "*/30 * * * *"
     - cron: "0 9 1 * *"
   workflow_dispatch:
+
+# Prevent two scheduled notifier cycles from running at the same time.
+concurrency:
+  group: reddit-notifier
+  cancel-in-progress: false
 
 jobs:
   notify:
