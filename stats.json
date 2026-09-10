@@ -6,7 +6,7 @@
   "algotrading": false,
   "Trading": true,
   "wallstreetbets": false,
-  "options": false,
+  "options": true,
   "swingtrading": false,
   "Scalping": false,
   "TechnicalAnalysis": false,
