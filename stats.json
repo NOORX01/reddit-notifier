@@ -5,7 +5,7 @@
   "RealDayTrading": false,
   "algotrading": false,
   "Trading": true,
-  "wallstreetbets": false,
+  "wallstreetbets": true,
   "options": true,
   "swingtrading": true,
   "Scalping": false,
