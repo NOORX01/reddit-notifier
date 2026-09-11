@@ -7,7 +7,7 @@
   "Trading": true,
   "wallstreetbets": false,
   "options": true,
-  "swingtrading": false,
+  "swingtrading": true,
   "Scalping": false,
   "TechnicalAnalysis": false,
   "Forexstrategy": true,
