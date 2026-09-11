@@ -15,7 +15,7 @@
   "TradingView": false,
   "OptionsTrading": false,
   "thetagang": false,
-  "CoveredCalls": false,
+  "CoveredCalls": true,
   "WheelOptions": false,
   "Commodities": false,
   "quantfinance": false,
