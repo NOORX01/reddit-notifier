@@ -25,7 +25,7 @@
   "stocks": false,
   "Trading212": false,
   "BitcoinMarkets": false,
-  "CryptoMarkets": false,
+  "CryptoMarkets": true,
   "OrderFlow_Trading": false,
   "TradingEdge": false,
   "MetaTrader": false,
