@@ -18,7 +18,7 @@
   "CoveredCalls": true,
   "WheelOptions": false,
   "Commodities": true,
-  "quantfinance": false,
+  "quantfinance": true,
   "PriceAction": false,
   "FuturesTrading": false,
   "StockMarket": false,
