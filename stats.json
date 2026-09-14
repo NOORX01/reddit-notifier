@@ -28,7 +28,7 @@
   "CryptoMarkets": true,
   "OrderFlow_Trading": false,
   "TradingEdge": false,
-  "MetaTrader": false,
+  "MetaTrader": true,
   "Forexnoobs": false,
   "PropFirm": false,
   "FTMO": false,
