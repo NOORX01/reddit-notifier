@@ -20,7 +20,7 @@
   "Commodities": true,
   "quantfinance": true,
   "PriceAction": false,
-  "FuturesTrading": false,
+  "FuturesTrading": true,
   "StockMarket": false,
   "stocks": false,
   "Trading212": false,
