@@ -22,7 +22,7 @@
   "PriceAction": false,
   "FuturesTrading": true,
   "StockMarket": false,
-  "stocks": false,
+  "stocks": true,
   "Trading212": false,
   "BitcoinMarkets": false,
   "CryptoMarkets": true,
