@@ -12,7 +12,7 @@
   "TechnicalAnalysis": false,
   "Forexstrategy": true,
   "ForexSignals": false,
-  "TradingView": false,
+  "TradingView": true,
   "OptionsTrading": true,
   "thetagang": false,
   "CoveredCalls": true,
