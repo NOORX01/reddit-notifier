@@ -14,7 +14,7 @@
   "ForexSignals": false,
   "TradingView": true,
   "OptionsTrading": true,
-  "thetagang": false,
+  "thetagang": true,
   "CoveredCalls": true,
   "WheelOptions": false,
   "Commodities": true,
