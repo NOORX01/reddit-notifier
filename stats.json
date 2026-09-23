@@ -9,7 +9,7 @@
   "options": true,
   "swingtrading": true,
   "Scalping": false,
-  "TechnicalAnalysis": false,
+  "TechnicalAnalysis": true,
   "Forexstrategy": true,
   "ForexSignals": false,
   "TradingView": true,
