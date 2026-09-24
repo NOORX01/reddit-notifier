@@ -26,7 +26,7 @@
   "Trading212": true,
   "BitcoinMarkets": false,
   "CryptoMarkets": true,
-  "OrderFlow_Trading": false,
+  "OrderFlow_Trading": true,
   "TradingEdge": false,
   "MetaTrader": true,
   "Forexnoobs": false,
