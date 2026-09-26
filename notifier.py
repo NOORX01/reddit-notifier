@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
-# 30-sub watchlist. The script checks exactly one subreddit per minute.
+# 32-sub watchlist. The script checks exactly one subreddit per minute.
 SUBREDDITS = [
     "Forex",
     "ForexTraders",
@@ -37,6 +37,8 @@ SUBREDDITS = [
     "OrderFlow_Trading",
     "TradingEdge",
     "MetaTrader",
+    "DaytradingPro",
+    "tradingmillionaires",
 ]
 
 KEYWORDS = [
