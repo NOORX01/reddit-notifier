@@ -29,6 +29,8 @@
   "OrderFlow_Trading": true,
   "TradingEdge": false,
   "MetaTrader": true,
+  "DaytradingPro": false,
+  "tradingmillionaires": false,
   "Forexnoobs": false,
   "PropFirm": false,
   "FTMO": false,
