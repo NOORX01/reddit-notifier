@@ -2,7 +2,7 @@ name: reddit-notifier
 on:
   schedule:
     # notifier.py keeps the runner alive for one 30-minute watchlist cycle.
-    - cron: "*/30 * * * *"
+    - cron: "*/35 * * * *"
     - cron: "0 9 1 * *"
   workflow_dispatch:
 
