@@ -21,7 +21,7 @@
   "quantfinance": true,
   "PriceAction": false,
   "FuturesTrading": true,
-  "StockMarket": false,
+  "StockMarket": true,
   "stocks": true,
   "Trading212": true,
   "BitcoinMarkets": false,
