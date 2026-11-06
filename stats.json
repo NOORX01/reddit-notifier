@@ -2,7 +2,7 @@
   "Forex": true,
   "ForexTraders": false,
   "Daytrading": true,
-  "RealDayTrading": false,
+  "RealDayTrading": true,
   "algotrading": true,
   "Trading": true,
   "wallstreetbets": true,
